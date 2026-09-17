@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Exercise 5: Bootstrap 5</title>
+    <style>
+        /* CSS cho bài 1 & 3: Grid testing */
+        .grid-container .row > div {
+            background-color: #d9d9d9;
+            border: 1px solid #888888;
+            padding: 15px 10px;
+            font-size: 14px;
+        }
+
+        /* CSS cho bài 4: Website mini */
+        .ex4-header {
+            background-color: #e68a24;
+            padding: 30px 15px;
+            text-align: center;
+        }
+        .ex4-logo-card {
+            background-color: #ffffff;
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .ex4-footer {
+            background-color: #f3c27a;
+            color: #ffffff;
+            padding: 14px;
+            text-align: center;
+        }
+
+        /* CSS chi tiết cho bài 5: Chuẩn xác theo ảnh mẫu */
+        .student-site-wrapper {
+            border: 1px solid #c9c9c9;
+            background-color: #ffffff;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header thanh điều hướng màu be/vàng cam nhạt */
+        .site-topbar {
+            background-color: #edd2b1;
+            padding: 12px 20px;
+        }
+
+        .site-topbar .nav-link-custom {
+            color: #7b4317;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .site-topbar .nav-link-custom:hover {
+            color: #d15600;
+        }
+
+        /* Banner cam rực rỡ chứa ảnh sinh viên FPT */
+        .site-banner-box {
+            background-color: #ea7b1d;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .site-banner-box img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Khung 4 card sinh viên */
+        .students-grid-container {
+            border: 1px solid #d5d5d5;
+        }
+
+        .student-item-box {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            background-color: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .student-item-box .student-photo {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .student-code {
+            color: #333333;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #444444;
+            margin-bottom: 6px;
+            padding: 0 4px;
+        }
+
+        .student-radio-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 12px;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+
+        .btn-orange-submit {
+            background-color: #ea7b1d;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            padding: 3px 22px;
+            font-size: 12px;
+            font-weight: 500;
+            display: block;
+            margin: 0 auto;
+            transition: background 0.2s;
+        }
+        .btn-orange-submit:hover {
+            background-color: #cb6512;
+            color: #ffffff;
+        }
+
+        .student-footer-box {
+            background-color: #ea7b1d;
+            color: #ffffff;
+            padding: 20px;
+            font-size: 12px;
+        }
+        .student-footer-box a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        
+        <!-- ================= 1. LET'S TEST THE GRID ================= -->
+        <h3 class="fw-normal mb-4">1. Create website with bootstrap 5 as image below</h3>
+        <div class="p-5 mb-4 bg-body-secondary rounded-1">
+            <h1 class="display-6 fw-semibold">Let's test the grid!</h1>
+        </div>
+
+        <div class="grid-container mb-5">
+            <div class="row g-0">
+                <div class="col-6">First col</div>
+                <div class="col-6">Second col</div>
+            </div>
+            <div class="row g-0">
+                <div class="col-4">col</div>
+                <div class="col-4">col</div>
+                <div class="col-4">col</div>
+            </div>
+            <div class="row g-0 mb-4">
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+            </div>
+
+            <div class="p-3 text-center" style="background-color: #d3c7c7;">
+                <h2 class="m-0 fw-bold fs-3 text-dark">Created by ABC!</h2>
+            </div>
+        </div>
+
+        <!-- ================= 2. MY FIRST BOOTSTRAP PAGE ================= -->
+        <h3 class="fw-normal mb-4">2. Create website with bootstrap 5 as image below</h3>
+        <div class="p-5 mb-4 bg-body-secondary rounded-1">
+            <h1 class="display-6 fw-semibold text-center">My First Bootstrap Page</h1>
+        </div>
+        <div class="row text-center mt-4 mb-5 g-4 align-items-center">
+            <div class="col-4">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/960px-HTML5_logo_and_wordmark.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" 
+                     class="img-fluid" style="max-height: 220px;" alt="HTML5">
+            </div>
+            <div class="col-4">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/CSS3_logo.svg/960px-CSS3_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" 
+                     class="img-fluid" style="max-height: 220px;" alt="CSS3">
+            </div>
+            <div class="col-4">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/960px-Bootstrap_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" 
+                     class="img-fluid" style="max-height: 220px;" alt="Bootstrap">
+            </div>     
+        </div>
+
+        <!-- ================= 3. LET'S TEST THE GRID WITH NAV ================= -->
+        <h3 class="fw-normal mb-4">3. Create website with bootstrap 5 as image below</h3>
+        <div class="p-5 mb-3 bg-body-secondary rounded-1">
+            <h1 class="display-6 fw-semibold">Let's test the grid!</h1>
+        </div>
+        
+        <nav class="nav mb-3">
+            <a class="nav-link active fw-semibold" href="#">Active</a>
+            <a class="nav-link text-primary" href="#">Link</a>
+            <a class="nav-link text-primary" href="#">Link</a>
+            <a class="nav-link disabled text-muted">Disabled</a>
+        </nav>
+
+        <div class="grid-container mb-5">
+            <div class="row g-0">
+                <div class="col-6">First col</div>
+                <div class="col-6">Second col</div>
+            </div>
+            <div class="row g-0">
+                <div class="col-4">col</div>
+                <div class="col-4">col</div>
+                <div class="col-4">col</div>
+            </div>
+            <div class="row g-0 mb-4">
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+                <div class="col-3">col</div>
+            </div>
+
+            <div class="p-3 text-center" style="background-color: #d3c7c7;">
+                <h2 class="m-0 fw-bold fs-3 text-dark">Created by ABC!</h2>
+            </div>
+        </div>
+
+        <!-- ================= 4. SIMPLE FPT WEBSITE ================= -->
+        <h3 class="fw-normal mb-4">4. Create website with bootstrap 5 as image below</h3>
+        <div class="mb-5 border rounded overflow-hidden shadow-sm" style="max-width: 850px; margin: 0 auto;">
+            <div class="ex4-header">
+                <div class="ex4-logo-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg" class="img-fluid" style="max-height: 60px;" alt="FPT Education">
+                    <h2 class="fw-bold mt-2 mb-0" style="color: #e68a24; font-family: sans-serif; letter-spacing: 1px; font-size: 1.5rem;">FPT UNIVERSITY</h2>
+                </div>
+                <div class="d-flex justify-content-center gap-4 fs-6">
+                    <a href="#" class="text-white text-decoration-none">Home</a>
+                    <a href="#" class="text-white text-decoration-none">About</a>
+                    <a href="#" class="text-white text-decoration-none">Contact</a>
+                </div> 
+            </div>
+            <div class="text-center my-5 px-3">
+                <h3 class="fw-bold mb-3 text-dark">About</h3>
+                <p class="text-secondary">This is the about section of the website.</p>
+            </div>
+            <div class="text-center my-5 px-3">
+                <h3 class="fw-bold mb-3 text-dark">Contact</h3>
+                <p class="text-secondary">For any inquiries, please contact us at example@example.com.</p>
+            </div>
+            <div class="ex4-footer">
+                <p class="fs-6 mb-0">© 2023 Website. All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- ================= 5. CREATE WEBSITE WITH BOOTSTRAP 5 AS IMAGE BELOW ================= -->
+        <h3 class="fw-normal mb-4">5. Create website with bootstrap 5 as image below</h3>
+        
+        <div class="student-site-wrapper mb-5 shadow-sm">
+            
+            <!-- 1. Thanh Topbar màu be/vàng nhạt -->
+            <div class="site-topbar d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Logo FPT -->
+                    <div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg" alt="FPT Education" height="30">
+                        <div class="fw-bold text-uppercase" style="font-size: 10px; color: #ea7b1d; letter-spacing: 0.5px;">FPT UNIVERSITY</div>
+                    </div>
+                    <!-- Menu icons và chữ -->
+                    <div class="d-flex align-items-center gap-3 ms-2">
+                        <a href="#" class="nav-link-custom">
+                            <i class="bi bi-house-door-fill text-danger"></i> Trang chủ
+                        </a>
+                        <a href="#" class="nav-link-custom">
+                            <i class="bi bi-briefcase-fill text-warning"></i> Ngành học
+                        </a>
+                        <a href="#" class="nav-link-custom">
+                            <i class="bi bi-mortarboard-fill text-danger"></i> Tuyển sinh
+                        </a>
+                        <a href="#" class="nav-link-custom">
+                            <i class="bi bi-person-lines-fill text-warning"></i> Sinh viên
+                        </a>
+                    </div>
+                </div>
+                <!-- Search bar bên phải -->
+                <div class="d-flex align-items-center gap-2">
+                    <span style="font-size: 12px; color: #444; font-weight: 500;">Search:</span>
+                    <input type="text" class="form-control form-control-sm bg-white" style="width: 140px; height: 26px; font-size: 12px;">
+                </div>
+            </div>
+
+            <!-- 2. Hero Banner màu cam với ảnh chuẩn sinh viên FPT -->
+            <div class="site-banner-box">
+                <img src="images/banner-students.jpg" alt="Sinh viên FPT">
+            </div>
+
+            <!-- 3. Breadcrumb: Home / Students -->
+            <div class="px-3 pt-3">
+                <span class="badge bg-light text-secondary border px-2 py-1" style="font-weight: normal; font-size: 11px;">
+                    <a href="#" class="text-decoration-none" style="color: #ea7b1d;">Home</a> / Students
+                </span>
+            </div>
+
+            <!-- 4. Tiêu đề Students Detail -->
+            <h4 class="fw-bold text-center text-dark my-3" style="font-size: 1.35rem;">Students Detail</h4>
+
+            <!-- 5. Lưới 4 thẻ sinh viên (Grid 2x2) -->
+            <div class="p-3 pt-0">
+                <div class="row g-3">
+                    
+                    <!-- Sinh viên 1: Nguyễn Hữu Quốc Khánh -->
+                    <div class="col-12 col-md-6">
+                        <div class="student-item-box">
+                            <img src="images/student-khanh.jpg" alt="Nguyễn Hữu Quốc Khánh" class="student-photo">
+                            <div>
+                                <div class="student-code">DE160182</div>
+                                <div class="student-info-row">
+                                    <span class="fw-semibold">Nguyễn Hữu Quốc Khánh</span>
+                                    <span>DaNang</span>
+                                </div>
+                                <div class="student-radio-row">
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160182" id="absent-khanh" value="absent">
+                                        <label class="form-check-label" for="absent-khanh">Absent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160182" id="present-khanh" value="present">
+                                        <label class="form-check-label" for="present-khanh">Present</label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-orange-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sinh viên 2: Choy Vĩnh Thiện -->
+                    <div class="col-12 col-md-6">
+                        <div class="student-item-box">
+                            <img src="images/student-thien.jpg" alt="Choy Vĩnh Thiện" class="student-photo">
+                            <div>
+                                <div class="student-code">DE160377</div>
+                                <div class="student-info-row">
+                                    <span class="fw-semibold">Choy Vĩnh Thiện</span>
+                                    <span>QuangNam</span>
+                                </div>
+                                <div class="student-radio-row">
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160377" id="absent-thien" value="absent">
+                                        <label class="form-check-label" for="absent-thien">Absent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160377" id="present-thien" value="present">
+                                        <label class="form-check-label" for="present-thien">Present</label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-orange-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sinh viên 3: Đỗ Nguyên Phúc -->
+                    <div class="col-12 col-md-6">
+                        <div class="student-item-box">
+                            <img src="images/student-phuc.jpg" alt="Đỗ Nguyên Phúc" class="student-photo">
+                            <div>
+                                <div class="student-code">DE160547</div>
+                                <div class="student-info-row">
+                                    <span class="fw-semibold">Đỗ Nguyên Phúc</span>
+                                    <span>QuangNam</span>
+                                </div>
+                                <div class="student-radio-row">
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160547" id="absent-phuc" value="absent">
+                                        <label class="form-check-label" for="absent-phuc">Absent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de160547" id="present-phuc" value="present">
+                                        <label class="form-check-label" for="present-phuc">Present</label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-orange-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sinh viên 4: Lê Hoàng Minh -->
+                    <div class="col-12 col-md-6">
+                        <div class="student-item-box">
+                            <img src="images/student-minh.jpg" alt="Lê Hoàng Minh" class="student-photo">
+                            <div>
+                                <div class="student-code">DE170049</div>
+                                <div class="student-info-row">
+                                    <span class="fw-semibold">Lê Hoàng Minh</span>
+                                    <span>DaNang</span>
+                                </div>
+                                <div class="student-radio-row">
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de170049" id="absent-minh" value="absent">
+                                        <label class="form-check-label" for="absent-minh">Absent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="att-de170049" id="present-minh" value="present">
+                                        <label class="form-check-label" for="present-minh">Present</label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-orange-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 6. Footer màu cam chuẩn theo tài liệu gốc -->
+            <footer class="student-footer-box">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-2">
+                    <div>
+                        <div class="fw-bold mb-1" style="font-size: 13px;">Our Address</div>
+                        <div style="opacity: 0.9;">Khu đô thị FPT Đà Nẵng</div>
+                        <div style="opacity: 0.9;"><i class="bi bi-telephone-fill me-1"></i> +84236 730 0999</div>
+                        <div style="opacity: 0.9;"><i class="bi bi-envelope-fill me-1"></i> fptdanang@fpt.edu.vn</div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a href="#" title="Google+"><i class="bi bi-google"></i></a>
+                        <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                        <a href="#" title="Email"><i class="bi bi-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="text-center pt-2 border-top border-white border-opacity-25 opacity-75" style="font-size: 11px;">
+                    © Copyright 2023
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
