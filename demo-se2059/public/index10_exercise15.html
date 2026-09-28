@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 15: React Hook (useReducer)</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+        }
+
+        .lab-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .expectations-list li {
+            margin-bottom: 3px;
+        }
+
+        /* Khung Code mẫu theo giáo trình */
+        .code-snippet-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .code-snippet-box .comment { color: #6a9955; }
+        .code-snippet-box .keyword { color: #569cd6; }
+        .code-snippet-box .string { color: #ce9178; }
+        .code-snippet-box .func { color: #dcdcaa; }
+
+        /* Output container */
+        .output-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 14px;
+        }
+
+        .output-header {
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-body {
+            background-color: #282c34;
+            color: #ffffff;
+            padding: 28px 20px;
+        }
+
+        /* Quiz Box chuẩn phong cách ảnh lab */
+        .quiz-card {
+            background-color: #282c34;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 30px 24px;
+            text-align: center;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .quiz-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #f8fafc;
+        }
+
+        .quiz-question {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 22px;
+            color: #ffffff;
+        }
+
+        .btn-option {
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 2px solid #ced4da;
+            border-radius: 4px;
+            padding: 7px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+        }
+        .btn-option:hover {
+            background-color: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .btn-option.selected {
+            background-color: #0d6efd;
+            color: #ffffff;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.35);
+        }
+
+        .btn-quiz-action {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 7px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-quiz-action:hover:not(:disabled) {
+            background-color: #cbd5e1;
+        }
+        .btn-quiz-action:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-counter {
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            width: 42px;
+            height: 42px;
+            font-size: 20px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-counter:hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Header -->
+        <div class="lab-card mb-4">
+            <h1 class="lab-title">Exercise 15: React Hook (useReducer)</h1>
+            <hr style="border-top: 2px solid #0f172a; margin: 10px 0 16px;">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                <code>useReducer</code> is a React hook that allows you to manage state and state transitions within a functional component. 
+                It is an alternative to using the <code>useState</code> hook when you have more complex state logic that involves multiple actions. 
+                These exercises will help you understand how to use <code>useReducer</code> in React.
+            </p>
+        </div>
+
+        <h3 class="section-header mb-3" style="font-size: 1.25rem; font-style: normal; font-weight: 700;">Exercises</h3>
+
+        <!-- React Root -->
+        <div id="root"></div>
+
+        <!-- Conclusion -->
+        <div class="lab-card mt-4 text-center">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                In conclusion, the <code>useReducer</code> hook in React provides a way to manage state and state transitions within functional components.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18 & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useReducer } = React;
+
+        // ========================================================
+        // 1. COUNTER COMPONENT VỚI USEREDUCER
+        // ========================================================
+        function counterReducer(state, action) {
+            switch (action.type) {
+                case 'INCREMENT':
+                    return { count: state.count + 1 };
+                case 'DECREMENT':
+                    return { count: state.count - 1 };
+                case 'RESET':
+                    return { count: 0 };
+                default:
+                    return state;
+            }
+        }
+
+        function Counter() {
+            const [state, dispatch] = useReducer(counterReducer, { count: 0 });
+
+            return (
+                <div className="text-center py-2">
+                    <div style={{ fontSize: '2.5rem', fontWeight: 600, color: '#61dafb', marginBottom: '16px' }}>
+                        Count: {state.count}
+                    </div>
+
+                    <div className="d-flex justify-content-center align-items-center gap-3">
+                        <button 
+                            className="btn-counter" 
+                            title="Decrement"
+                            onClick={() => dispatch({ type: 'DECREMENT' })}
+                        >
+                            &minus;
+                        </button>
+                        <button 
+                            className="btn-counter" 
+                            title="Increment"
+                            onClick={() => dispatch({ type: 'INCREMENT' })}
+                        >
+                            &#43;
+                        </button>
+                        <button 
+                            className="btn-quiz-action"
+                            style={{ height: '42px', padding: '0 20px' }}
+                            onClick={() => dispatch({ type: 'RESET' })}
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        function Exercise1Section() {
+            return (
+                <div className="lab-card">
+                    <div className="exercise-title">1. Use useReducer to manage state in a simple counter component.</div>
+                    <p style={{ color: '#475569', fontSize: '0.95rem' }}>
+                        Define a simple <code>counterReducer</code> function that takes the current state and an action as parameters. 
+                        The Counter component uses the <code>useReducer</code> hook to initialize count state to 0 and dispatch 
+                        "INCREMENT", "DECREMENT", and "RESET" actions.
+                    </p>
+
+                    <div className="expectations-title">Code Implementation (Hint):</div>
+                    <div className="code-snippet-box">
+<span className="keyword">function</span> <span className="func">counterReducer</span>(state, action) &#123;
+  <span className="keyword">switch</span> (action.type) &#123;
+    <span className="keyword">case</span> <span className="string">'INCREMENT'</span>:
+      <span className="keyword">return</span> &#123; count: state.count + 1 &#125;;
+    <span className="keyword">case</span> <span className="string">'DECREMENT'</span>:
+      <span className="keyword">return</span> &#123; count: state.count - 1 &#125;;
+    <span className="keyword">case</span> <span className="string">'RESET'</span>:
+      <span className="keyword">return</span> &#123; count: 0 &#125;;
+    <span className="keyword">default</span>:
+      <span className="keyword">return</span> state;
+  &#125;
+&#125;
+
+<span className="keyword">const</span> [state, dispatch] = <span className="func">useReducer</span>(counterReducer, &#123; count: 0 &#125;);
+                    </div>
+
+                    <div className="output-container">
+                        <div className="output-header">
+                            <span>LIVE OUTPUT - COUNTER COMPONENT (USEREDUCER)</span>
+                            <span>Actions: INCREMENT, DECREMENT, RESET</span>
+                        </div>
+                        <div className="output-body">
+                            <Counter />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========================================================
+        // 2. QUESTION BANK COMPONENT VỚI USEREDUCER
+        // ========================================================
+        const initialQuizState = {
+            questions: [
+                {
+                    id: 1,
+                    question: "What is the capital of Australia?",
+                    options: ["Sydney", "Canberra", "Melbourne", "Perth"],
+                    answer: "Canberra"
+                },
+                {
+                    id: 2,
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                    answer: "Mars"
+                },
+                {
+                    id: 3,
+                    question: "What is the largest ocean on Earth?",
+                    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                    answer: "Pacific Ocean"
+                }
+            ],
+            currentQuestion: 0,
+            selectedOption: "",
+            score: 0,
+            showScore: false
+        };
+
+        function quizReducer(state, action) {
+            switch (action.type) {
+                case 'SELECT_OPTION':
+                    return {
+                        ...state,
+                        selectedOption: action.payload
+                    };
+
+                case 'NEXT_QUESTION': {
+                    const currentQ = state.questions[state.currentQuestion];
+                    const isCorrect = state.selectedOption === currentQ.answer;
+                    const nextScore = isCorrect ? state.score + 1 : state.score;
+                    const isLast = state.currentQuestion + 1 >= state.questions.length;
+
+                    if (isLast) {
+                        return {
+                            ...state,
+                            score: nextScore,
+                            showScore: true
+                        };
+                    }
+
+                    return {
+                        ...state,
+                        currentQuestion: state.currentQuestion + 1,
+                        selectedOption: "",
+                        score: nextScore
+                    };
+                }
+
+                case 'RESTART_QUIZ':
+                    return {
+                        ...state,
+                        currentQuestion: 0,
+                        selectedOption: "",
+                        score: 0,
+                        showScore: false
+                    };
+
+                default:
+                    return state;
+            }
+        }
+
+        function QuestionBank() {
+            const [state, dispatch] = useReducer(quizReducer, initialQuizState);
+            const { questions, currentQuestion, selectedOption, score, showScore } = state;
+            const currentQ = questions[currentQuestion];
+
+            const handleOptionSelect = (option) => {
+                dispatch({ type: 'SELECT_OPTION', payload: option });
+            };
+
+            const handleNextQuestion = () => {
+                dispatch({ type: 'NEXT_QUESTION' });
+            };
+
+            const handleRestartQuiz = () => {
+                dispatch({ type: 'RESTART_QUIZ' });
+            };
+
+            return (
+                <div className="quiz-card">
+                    {showScore ? (
+                        <div>
+                            <div className="quiz-title" style={{ fontSize: '2.2rem', marginBottom: '24px' }}>
+                                Your Score: {score}/{questions.length}
+                            </div>
+                            <button className="btn-quiz-action" style={{ fontSize: '1.2rem', padding: '10px 28px' }} onClick={handleRestartQuiz}>
+                                Restart Quiz
+                            </button>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="quiz-title">
+                                Question {currentQuestion + 1}
+                            </div>
+                            <div className="quiz-question">
+                                {currentQ.question}
+                            </div>
+
+                            {/* Options Buttons */}
+                            <div className="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+                                {currentQ.options.map((opt) => (
+                                    <button
+                                        key={opt}
+                                        className={`btn-option ${selectedOption === opt ? 'selected' : ''}`}
+                                        onClick={() => handleOptionSelect(opt)}
+                                    >
+                                        {opt}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Next Button */}
+                            <div>
+                                <button
+                                    className="btn-quiz-action"
+                                    disabled={!selectedOption}
+                                    onClick={handleNextQuestion}
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function Exercise2Section() {
+            return (
+                <div className="lab-card">
+                    <div className="exercise-title">2. Create a Question Bank.</div>
+                    <p style={{ color: '#475569', fontSize: '0.95rem' }}>
+                        Define an <code>initialState</code> object and a <code>quizReducer</code> function that manages questions, 
+                        the currently selected option, score tracking, and navigation between questions using <code>useReducer</code>.
+                    </p>
+
+                    <div className="expectations-title">Code Implementation (Hint):</div>
+                    <div className="code-snippet-box">
+<span className="keyword">const</span> initialState = &#123;
+  questions: [ ... ],
+  currentQuestion: 0,
+  selectedOption: <span className="string">''</span>,
+  score: 0,
+  showScore: <span className="keyword">false</span>
+&#125;;
+
+<span className="keyword">function</span> <span className="func">quizReducer</span>(state, action) &#123;
+  <span className="keyword">switch</span> (action.type) &#123;
+    <span className="keyword">case</span> <span className="string">'SELECT_OPTION'</span>:
+      <span className="keyword">return</span> &#123; ...state, selectedOption: action.payload &#125;;
+    <span className="keyword">case</span> <span className="string">'NEXT_QUESTION'</span>:
+      <span className="comment">// Kiểm tra đáp án, tăng điểm và chuyển câu tiếp theo</span>
+      <span className="keyword">return</span> &#123; ... &#125;;
+    <span className="keyword">case</span> <span className="string">'RESTART_QUIZ'</span>:
+      <span className="keyword">return</span> &#123; ...initialState &#125;;
+    <span className="keyword">default</span>:
+      <span className="keyword">return</span> state;
+  &#125;
+&#125;
+                    </div>
+
+                    <div className="output-container">
+                        <div className="output-header">
+                            <span>LIVE OUTPUT - QUESTION BANK QUIZ COMPONENT</span>
+                            <span>useReducer State Transitions</span>
+                        </div>
+                        <div className="output-body">
+                            <QuestionBank />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App
+        function App() {
+            return (
+                <div>
+                    <Exercise1Section />
+                    <Exercise2Section />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

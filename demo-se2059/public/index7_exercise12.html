@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 12: React Hook (useState)</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Tiêu đề & Heading chuẩn đề bài */
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #222222;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        .exercise-item {
+            margin-bottom: 40px;
+        }
+
+        .exercise-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 8px;
+        }
+
+        .exercise-desc {
+            font-size: 0.95rem;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+            color: #333333;
+        }
+
+        .expectations-list li {
+            margin-bottom: 3px;
+        }
+
+        /* Khung hiển thị Dark Box chuẩn theo đúng ảnh chụp bài tập */
+        .dark-demo-box {
+            background-color: #282c34;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 24px 20px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Nút màu trắng xám chuẩn lab */
+        .lab-btn {
+            background-color: #ffffff;
+            color: #212529;
+            border: 1px solid #ced4da;
+            padding: 6px 18px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+        .lab-btn:hover {
+            background-color: #f1f3f5;
+        }
+
+        /* Input đơn giản chuẩn lab */
+        .lab-input {
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 14px;
+            color: #212529;
+        }
+        .lab-input:focus {
+            outline: none;
+            border-color: #4d90fe;
+        }
+
+        /* Nút đỏ Add Todo & Delete */
+        .btn-coral {
+            background-color: #e65c53;
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .btn-coral:hover {
+            opacity: 0.9;
+        }
+
+        /* Card Todo bên trong dark-demo-box */
+        .todo-inner-card {
+            background-color: #ffffff;
+            color: #212529;
+            border-radius: 4px;
+            padding: 14px 18px;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 14px;
+        }
+
+        /* Box màu Color Switcher */
+        .color-box {
+            width: 110px;
+            height: 110px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background-color 0.2s;
+        }
+
+        /* Item có thể kéo thả (Drag and drop) */
+        .dnd-item {
+            cursor: grab;
+            padding: 6px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.15s;
+            user-select: none;
+        }
+        .dnd-item:hover {
+            background-color: rgba(255, 255, 255, 0.16);
+        }
+        .dnd-item.dragging {
+            opacity: 0.35;
+            border: 1px dashed #ffffff;
+        }
+
+        hr.divider {
+            border: 0;
+            border-top: 1px solid #e0e0e0;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Tiêu đề Lab -->
+        <h1 class="lab-title">Exercise 12: React Hook (useState)</h1>
+        <hr style="border-top: 2px solid #333; margin: 10px 0 20px;">
+
+        <!-- Mục tiêu -->
+        <div class="mb-4">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #333; font-size: 0.95rem; text-align: justify;">
+                <strong>useState</strong> is a React hook that allows you to add state to functional components in React. 
+                By using the <code>useState</code> hook, you can easily introduce and manage state in your functional components, 
+                allowing them to maintain and update data over time.
+            </p>
+        </div>
+
+        <h2 class="section-header mb-3">Exercises</h2>
+
+        <!-- React Root container cho các bài tập thực hành -->
+        <div id="root"></div>
+
+        <!-- Kết luận -->
+        <div class="mt-5 pt-3">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #333; font-size: 0.95rem;">
+                After learning about <code>useState</code> in React Hook, you should now have a good understanding 
+                of how to add and manage state in functional components.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18, ReactDOM, Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // 1. Counter Component
+        function Exercise1() {
+            const [count, setCount] = useState(0);
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">
+                        1. Creating a simple counter component that increments a number every time a button is clicked.
+                    </div>
+                    <div className="expectations-title">Expectations:</div>
+                    <ul className="expectations-list">
+                        <li>Every time the button is clicked, the number should increment by 1</li>
+                        <li>Display the current number state as the text element</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '320px' }}>
+                        <button className="lab-btn mb-4" onClick={() => setCount(prev => prev + 1)}>
+                            Increment
+                        </button>
+                        <div style={{ fontSize: '1.45rem', fontWeight: '400' }}>
+                            Count: {count}
+                        </div>
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 2. Controlled Input Field
+        function Exercise2() {
+            const [text, setText] = useState('');
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">2. Controlled Input Field</div>
+                    <div className="exercise-desc">
+                        Create an input field component that allows a user to type in text and displays the text in real-time.
+                    </div>
+                    <div className="expectations-title">Expectations:</div>
+                    <ul className="expectations-list">
+                        <li>Every time the user types something in the input field, the text should update in the text element</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '340px' }}>
+                        <input 
+                            type="text" 
+                            className="lab-input mb-4" 
+                            placeholder="abc"
+                            value={text} 
+                            onChange={(e) => setText(e.target.value)} 
+                        />
+                        <div style={{ fontSize: '1.25rem', fontWeight: '400' }}>
+                            Input text: {text}
+                        </div>
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 3. Toggle Visibility
+        function Exercise3() {
+            const [isVisible, setIsVisible] = useState(false);
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">3. Toggle Visibility</div>
+                    <div className="exercise-desc">
+                        Creating a component that toggles the visibility of a piece of text when a button is clicked.
+                    </div>
+                    <div className="expectations-title">Expectations:</div>
+                    <ul className="expectations-list">
+                        <li>Initially, the text should be hidden and there is only show button</li>
+                        <li>When the button is clicked, the text should become visible and hide button is changed</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '320px', minHeight: '170px' }}>
+                        <button 
+                            className="lab-btn mb-3" 
+                            onClick={() => setIsVisible(prev => !prev)}
+                        >
+                            {isVisible ? 'Hide' : 'Show'}
+                        </button>
+                        {isVisible && (
+                            <div style={{ fontSize: '1.25rem', fontWeight: '400' }}>
+                                Toggle me!
+                            </div>
+                        )}
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 4. Todo List
+        function Exercise4() {
+            const [todos, setTodos] = useState(['Học lập trình .NET', 'Học lập trình Java']);
+            const [inputTask, setInputTask] = useState('');
+
+            const handleAdd = (e) => {
+                e.preventDefault();
+                const trimmed = inputTask.trim();
+                if (trimmed) {
+                    setTodos([...todos, trimmed]);
+                    setInputTask('');
+                }
+            };
+
+            const handleDelete = (index) => {
+                setTodos(todos.filter((_, i) => i !== index));
+            };
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">4. Todo List</div>
+                    <div className="exercise-desc">
+                        Creating a simple Todo List component that allows users to add new items to the list and delete items once they are completed. The Todo List should have the following features:
+                    </div>
+                    <ul className="expectations-list">
+                        <li>An input field for adding new todo items</li>
+                        <li>A button to submit the new todo item</li>
+                        <li>Display the list of todo items</li>
+                        <li>A delete button next to each todo item to remove it from the list</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '440px' }}>
+                        {/* Form thêm task */}
+                        <form onSubmit={handleAdd} className="d-flex gap-2 w-100 justify-content-center">
+                            <input 
+                                type="text"
+                                className="lab-input flex-grow-1"
+                                placeholder="Please enter a Task"
+                                value={inputTask}
+                                onChange={(e) => setInputTask(e.target.value)}
+                            />
+                            <button type="submit" className="btn-coral">
+                                Add Todo
+                            </button>
+                        </form>
+
+                        {/* Card danh sách Todo */}
+                        <div className="todo-inner-card">
+                            <div className="text-center fw-bold mb-2 pb-1" style={{ fontSize: '0.9rem', color: '#555' }}>
+                                Todo List
+                            </div>
+                            {todos.length === 0 ? (
+                                <div className="text-center text-muted small py-2">Danh sách trống</div>
+                            ) : (
+                                todos.map((item, idx) => (
+                                    <div key={idx} className="d-flex justify-content-between align-items-center py-1 border-bottom">
+                                        <span style={{ fontSize: '0.9rem' }}>{item}</span>
+                                        <button 
+                                            className="btn-coral"
+                                            style={{ padding: '2px 8px', fontSize: '11px' }}
+                                            onClick={() => handleDelete(idx)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 5. Color Switcher
+        function Exercise5() {
+            const [selectedColor, setSelectedColor] = useState('Select a color');
+
+            const colorMap = {
+                'Red': '#e74c3c',
+                'Blue': '#0033ff',
+                'Green': '#2ecc71',
+                'Yellow': '#f1c40f'
+            };
+
+            const currentColorCode = colorMap[selectedColor] || 'transparent';
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">5. Color Switcher</div>
+                    <div className="exercise-desc">
+                        Creating a simple Color Switcher component that allows users to change the background color of a div by selecting a color from a dropdown list.
+                    </div>
+                    <div className="expectations-title">Expectations:</div>
+                    <ul className="expectations-list">
+                        <li>Create a dropdown list with a few color options (e.g., red, blue, green, yellow)</li>
+                        <li>When a color is selected from the dropdown, the background color of the div should change to the selected color</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '420px' }}>
+                        <div className="d-flex align-items-center justify-content-center gap-4 w-100">
+                            <div>
+                                <select 
+                                    className="form-select form-select-sm"
+                                    style={{ width: '150px' }}
+                                    value={selectedColor}
+                                    onChange={(e) => setSelectedColor(e.target.value)}
+                                >
+                                    <option value="Select a color">Select a color</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Yellow">Yellow</option>
+                                </select>
+                            </div>
+
+                            <div 
+                                className="color-box d-flex align-items-center justify-content-center"
+                                style={{ backgroundColor: currentColorCode }}
+                            >
+                                {currentColorCode !== 'transparent' ? (
+                                    <span className="fw-bold text-white small" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>
+                                        {selectedColor}
+                                    </span>
+                                ) : (
+                                    <span style={{ color: '#888', fontSize: '11px' }}>Color Box</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 6. Search Filter
+        function Exercise6() {
+            const initialItems = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+            const [searchQuery, setSearchQuery] = useState('');
+
+            const filtered = initialItems.filter(item => 
+                item.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">6. Search Filter</div>
+                    <div className="exercise-desc">
+                        Creating a simple Search Filter component that allows users to filter a list of items based on their search input.
+                    </div>
+                    <div className="expectations-title">Expectations:</div>
+                    <ul className="expectations-list">
+                        <li>Create an input field for users to type in their search query</li>
+                        <li>Display the list of items and filter them based on the user's search input</li>
+                    </ul>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '340px' }}>
+                        <input 
+                            type="text"
+                            className="lab-input mb-3 w-100"
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+
+                        <div className="w-100" style={{ paddingLeft: '24px' }}>
+                            {filtered.length === 0 ? (
+                                <div className="text-muted small">No items found</div>
+                            ) : (
+                                <ul style={{ listStyleType: 'disc', margin: 0, padding: 0, fontSize: '1.15rem' }}>
+                                    {filtered.map((item, idx) => (
+                                        <li key={idx} style={{ padding: '3px 0' }}>{item}</li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+                    <hr className="divider" />
+                </div>
+            );
+        }
+
+        // 7. Drag and Drop List
+        function Exercise7() {
+            const [items, setItems] = useState(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']);
+            const [draggingIndex, setDraggingIndex] = useState(null);
+
+            const handleDragStart = (e, index) => {
+                setDraggingIndex(index);
+                e.dataTransfer.setData('text/plain', index);
+            };
+
+            const handleDragOver = (e) => {
+                e.preventDefault();
+            };
+
+            const handleDrop = (e, targetIndex) => {
+                e.preventDefault();
+                if (draggingIndex === null || draggingIndex === targetIndex) return;
+
+                const updated = [...items];
+                const [movedItem] = updated.splice(draggingIndex, 1);
+                updated.splice(targetIndex, 0, movedItem);
+
+                setItems(updated);
+                setDraggingIndex(null);
+            };
+
+            const handleDragEnd = () => {
+                setDraggingIndex(null);
+            };
+
+            return (
+                <div className="exercise-item">
+                    <div className="exercise-title">7. Drag and Drop List</div>
+                    <div className="exercise-desc">
+                        Creating a simple Drag and Drop List component that allows users to reorder a list of items by dragging and dropping them. The Drag and Drop List should have the following features:
+                    </div>
+                    <ul className="expectations-list">
+                        <li>Display the list of items</li>
+                        <li>Allow users to drag and drop items to reorder the list</li>
+                    </ul>
+
+                    <div style={{ fontSize: '0.88rem', color: '#555', marginBottom: '12px' }}>
+                        <strong>Hint:</strong> Kéo mục và thả vào vị trí mong muốn để đổi thứ tự (sử dụng sự kiện <code>onDragStart</code>, <code>onDragOver</code>, <code>onDrop</code> và phương thức <code>splice</code> của ES6).
+                    </div>
+
+                    <div className="dark-demo-box" style={{ maxWidth: '320px' }}>
+                        <div className="w-100">
+                            {items.map((item, idx) => (
+                                <div 
+                                    key={item}
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, idx)}
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, idx)}
+                                    onDragEnd={handleDragEnd}
+                                    className={`dnd-item ${draggingIndex === idx ? 'dragging' : ''}`}
+                                >
+                                    <span>• {item}</span>
+                                    <span style={{ fontSize: '11px', color: '#aaa' }}>drag ↕</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // App Component
+        function App() {
+            return (
+                <div>
+                    <Exercise1 />
+                    <Exercise2 />
+                    <Exercise3 />
+                    <Exercise4 />
+                    <Exercise5 />
+                    <Exercise6 />
+                    <Exercise7 />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
