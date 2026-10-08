@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 17: Demo about Render and Commit</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+        }
+
+        .lab-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .expectations-list li {
+            margin-bottom: 4px;
+        }
+
+        /* Khung Code mẫu theo giáo trình */
+        .code-snippet-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .code-snippet-box .comment { color: #6a9955; }
+        .code-snippet-box .keyword { color: #569cd6; }
+        .code-snippet-box .string { color: #ce9178; }
+        .code-snippet-box .func { color: #dcdcaa; }
+        .code-snippet-box .tag { color: #569cd6; }
+        .code-snippet-box .attr { color: #9cdcfe; }
+
+        /* Output container (Light theme) */
+        .output-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 14px;
+            background-color: #ffffff;
+        }
+
+        .output-header {
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 28px 20px;
+        }
+
+        /* Demo Card (Bright, clear) */
+        .demo-card {
+            background-color: #ffffff;
+            color: #0f172a;
+            border-radius: 8px;
+            padding: 28px 24px;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .demo-card h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .demo-card p {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .btn-custom {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 22px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-custom:hover {
+            background-color: #1d4ed8;
+        }
+
+        .timeline-step {
+            padding: 14px 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Header -->
+        <div class="lab-card mb-4">
+            <h1 class="lab-title">Exercise 17: Demo about Render and Commit</h1>
+            <hr style="border-top: 2px solid #0f172a; margin: 10px 0 16px;">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                In this exercise, through a simple demo that illustrates the concepts of rendering and committing in React.
+            </p>
+        </div>
+
+        <h3 class="section-header mb-3" style="font-size: 1.25rem; font-style: normal; font-weight: 700;">Exercises</h3>
+
+        <!-- Main Section: RenderAndCommitDemo -->
+        <div class="lab-card">
+            <div class="exercise-title">1. Create a component called RenderAndCommitDemo</div>
+            <ul class="expectations-list">
+                <li>Create a new React component called <code>RenderAndCommitDemo</code>. This component will have a button that, when clicked, changes the state and triggers a re-rendering.</li>
+                <li>Render the <code>RenderAndCommitDemo</code> component in the root of our application.</li>
+            </ul>
+
+            <div class="expectations-title">Code Implementation (RenderAndCommitDemo.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React, &#123; <span class="func">useState</span> &#125; <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">const</span> <span class="func">RenderAndCommitDemo</span> = () =&gt; &#123;
+    <span class="keyword">const</span> [count, setCount] = <span class="func">useState</span>(<span class="keyword">0</span>);
+
+    <span class="keyword">const</span> <span class="func">handleClick</span> = () =&gt; &#123;
+        <span class="func">setCount</span>(count + <span class="keyword">1</span>);
+    &#125;;
+
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">div</span>&gt;
+            &lt;<span class="tag">h1</span>&gt;Render and Commit Demo&lt;/<span class="tag">h1</span>&gt;
+            &lt;<span class="tag">p</span>&gt;Count: &#123;count&#125;&lt;/<span class="tag">p</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;handleClick&#125;&gt;Increment&lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+    );
+&#125;;
+
+<span class="keyword">export default</span> RenderAndCommitDemo;
+            </div>
+
+            <div class="expectations-title">Root Application Integration (App.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> <span class="string">'./Component/RenderAndCommitDemo'</span>;
+<span class="keyword">import</span> RenderAndCommitDemo <span class="keyword">from</span> <span class="string">'./Component/RenderAndCommitDemo'</span>;
+
+<span class="keyword">function</span> <span class="func">App</span>() &#123;
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">React.StrictMode</span>&gt;
+            &lt;<span class="tag">RenderAndCommitDemo</span> /&gt;
+        &lt;/<span class="tag">React.StrictMode</span>&gt;
+    );
+&#125;
+
+<span class="keyword">export default</span> App;
+            </div>
+
+            <!-- React Output Mount Point -->
+            <div id="root"></div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="lab-card mt-4 text-center">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                In this demo, when the button is clicked and the state is updated, React triggers the reconciliation process. It compares the previous virtual DOM with the updated virtual DOM and determines that the count value has changed. React then applies the necessary changes to the actual DOM, updating the displayed count value on the screen.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18 & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // 1. Standard RenderAndCommitDemo Component
+        const RenderAndCommitDemo = () => {
+            const [count, setCount] = useState(0);
+
+            const handleClick = () => {
+                setCount(count + 1);
+            };
+
+            return (
+                <div className="demo-card">
+                    <h1>Render and Commit Demo</h1>
+                    <p>Count: <strong className="text-primary">{count}</strong></p>
+                    <div className="d-flex justify-content-center gap-2">
+                        <button className="btn-custom" onClick={handleClick}>
+                            Increment
+                        </button>
+                        {count > 0 && (
+                            <button 
+                                className="btn btn-outline-secondary" 
+                                style={{ borderRadius: '6px' }}
+                                onClick={() => setCount(0)}
+                            >
+                                Reset
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // 2. Lifecycle Breakdown (Bright theme)
+        const LifecycleExplainer = () => {
+            return (
+                <div className="card bg-white p-4 mt-4 border shadow-sm text-start" style={{ maxWidth: '650px', margin: '0 auto' }}>
+                    <h2 className="h5 text-primary fw-bold mb-3 text-center">
+                        React Render & Commit Process Breakdown
+                    </h2>
+
+                    {/* Step 1: Trigger */}
+                    <div className="timeline-step" style={{ backgroundColor: '#fffbeb', border: '1px solid #fde68a', borderLeft: '5px solid #f59e0b' }}>
+                        <div className="d-flex align-items-center justify-content-between mb-1">
+                            <span className="fw-bold text-dark">
+                                1. Triggering a Render
+                            </span>
+                            <span className="badge bg-warning text-dark">State Setter</span>
+                        </div>
+                        <p className="small text-secondary mb-0">
+                            Clicking <strong>Increment</strong> executes <code>setCount(count + 1)</code>, which notifies React to schedule a re-render.
+                        </p>
+                    </div>
+
+                    {/* Step 2: Render */}
+                    <div className="timeline-step" style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderLeft: '5px solid #3b82f6' }}>
+                        <div className="d-flex align-items-center justify-content-between mb-1">
+                            <span className="fw-bold text-dark">
+                                2. Rendering the Component (Reconciliation)
+                            </span>
+                            <span className="badge bg-primary">Virtual DOM Diff</span>
+                        </div>
+                        <p className="small text-secondary mb-0">
+                            React calls <code>RenderAndCommitDemo()</code>. It generates a new Virtual DOM tree and diffs it against the previous render snapshot.
+                        </p>
+                    </div>
+
+                    {/* Step 3: Commit */}
+                    <div className="timeline-step" style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderLeft: '5px solid #10b981' }}>
+                        <div className="d-flex align-items-center justify-content-between mb-1">
+                            <span className="fw-bold text-dark">
+                                3. Committing to the DOM
+                            </span>
+                            <span className="badge bg-success">Real DOM Mutation</span>
+                        </div>
+                        <p className="small text-secondary mb-0">
+                            React applies only the minimal required mutations to the actual browser DOM (specifically updates text inside <code>&lt;p&gt;Count: ...&lt;/p&gt;</code>).
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Wrapper
+        function App() {
+            const [showLifecycle, setShowLifecycle] = useState(true);
+
+            return (
+                <div className="output-container">
+                    <div className="output-header">
+                        <span>LIVE OUTPUT - RENDER AND COMMIT DEMO COMPONENT</span>
+                        <div className="d-flex align-items-center gap-2">
+                            <span className="badge bg-primary">React 18 StrictMode</span>
+                            <button 
+                                className="btn btn-sm btn-outline-primary py-0 px-2" 
+                                style={{ fontSize: '0.8rem' }}
+                                onClick={() => setShowLifecycle(!showLifecycle)}
+                            >
+                                {showLifecycle ? 'Hide Breakdown' : 'Show Breakdown'}
+                            </button>
+                        </div>
+                    </div>
+                    <div className="output-body">
+                        <RenderAndCommitDemo />
+                        {showLifecycle && <LifecycleExplainer />}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        );
+    </script>
+</body>
+</html>
