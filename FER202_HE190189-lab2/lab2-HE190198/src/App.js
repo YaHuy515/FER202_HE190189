@@ -10,7 +10,7 @@ import MovieDetail from './components/MovieDetail';
 
 function MovieApp() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('Tất cả thể loại');
+  const [selectedGenre, setSelectedGenre] = useState('All Genres');
   const [sortBy, setSortBy] = useState('default');
   const [favorites, setFavorites] = useLocalStorage('movie_favorites', []);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -29,7 +29,7 @@ function MovieApp() {
   const filteredMovies = useMemo(() => {
     let result = movies.filter(movie => {
       const matchesSearch = movie.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesGenre = selectedGenre === 'Tất cả thể loại' || selectedGenre === 'All Genres' || movie.genre === selectedGenre;
+      const matchesGenre = selectedGenre === 'All Genres' || selectedGenre === 'All' || selectedGenre === 'Tất cả thể loại' || movie.genre === selectedGenre;
       return matchesSearch && matchesGenre;
     });
 
@@ -75,7 +75,7 @@ function MovieApp() {
         />
 
         <div style={{ margin: '15px 0', fontSize: '15px', fontWeight: 'bold' }}>
-          Tổng: {movies.length} | Yêu thích: {favorites.length} | Đang hiển thị: {filteredMovies.length}
+          Total: {movies.length} | Favorites: {favorites.length} | Showing: {filteredMovies.length}
         </div>
 
         <MovieList 

@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function MovieItem({ movie, isFavorite, onToggleFavorite, onViewDetail }) {
   return (
-    <div style={{ 
-      border: '1px solid #ddd', 
-      padding: '12px 15px', 
-      borderRadius: '6px', 
+    <div style={{
+      border: '1px solid #ddd',
+      padding: '12px 15px',
+      borderRadius: '6px',
       marginBottom: '10px',
       display: 'flex',
       justifyContent: 'space-between',
@@ -22,33 +22,33 @@ export default function MovieItem({ movie, isFavorite, onToggleFavorite, onViewD
           {movie.genre} &nbsp;|&nbsp; {movie.year} &nbsp;|&nbsp; ★ {movie.rating}
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button 
+          <button
             onClick={() => onToggleFavorite(movie.id)}
-            style={{ 
-              padding: '4px 10px', 
-              cursor: 'pointer', 
-              borderRadius: '4px', 
-              border: '1px solid #ccc', 
-              background: 'transparent', 
+            style={{
+              padding: '4px 10px',
+              cursor: 'pointer',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              background: 'transparent',
               color: 'inherit',
               fontSize: '13px'
             }}
           >
-            {isFavorite ? 'Bỏ thích' : 'Yêu thích'}
+            {isFavorite ? 'Remove Favorite' : 'Favorite'}
           </button>
-          <button 
+          <button
             onClick={() => onViewDetail(movie)}
-            style={{ 
-              padding: '4px 10px', 
-              cursor: 'pointer', 
-              borderRadius: '4px', 
-              border: '1px solid #ccc', 
-              background: 'transparent', 
+            style={{
+              padding: '4px 10px',
+              cursor: 'pointer',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              background: 'transparent',
               color: 'inherit',
               fontSize: '13px'
             }}
           >
-            Chi tiết
+            Details
           </button>
         </div>
       </div>

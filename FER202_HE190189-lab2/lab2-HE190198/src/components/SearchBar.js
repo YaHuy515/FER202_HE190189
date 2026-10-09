@@ -15,7 +15,7 @@ export default function SearchBar({ searchTerm, setSearchTerm }) {
       <input 
         ref={inputRef}
         type="text"
-        placeholder="Tìm tên phim..."
+        placeholder="Search movies..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }}

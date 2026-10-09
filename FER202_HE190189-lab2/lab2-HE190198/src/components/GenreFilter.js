@@ -1,15 +1,15 @@
 import React from 'react';
 
 export default function GenreFilter({ selectedGenre, setSelectedGenre, sortBy, setSortBy }) {
-  const genres = ['Tất cả thể loại', 'Action', 'Animation', 'Comedy', 'Drama', 'Romance', 'Sci-Fi'];
+  const genres = ['All Genres', 'Action', 'Animation', 'Comedy', 'Drama', 'Romance', 'Sci-Fi'];
 
   const sortOptions = [
-    { value: 'default', label: 'Sắp xếp: Mặc định' },
-    { value: 'rating-desc', label: 'Sắp xếp: Đánh giá cao nhất' },
-    { value: 'rating-asc', label: 'Sắp xếp: Đánh giá thấp nhất' },
-    { value: 'year-desc', label: 'Sắp xếp: Năm mới nhất' },
-    { value: 'year-asc', label: 'Sắp xếp: Năm cũ nhất' },
-    { value: 'title-asc', label: 'Sắp xếp: Tên A-Z' }
+    { value: 'default', label: 'Sort: Default' },
+    { value: 'rating-desc', label: 'Sort: Highest Rating' },
+    { value: 'rating-asc', label: 'Sort: Lowest Rating' },
+    { value: 'year-desc', label: 'Sort: Newest Year' },
+    { value: 'year-asc', label: 'Sort: Oldest Year' },
+    { value: 'title-asc', label: 'Sort: Title A-Z' }
   ];
 
   return (

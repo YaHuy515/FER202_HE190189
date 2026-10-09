@@ -9,6 +9,9 @@ import Exercise16 from './Exercise16';
 import Exercise17 from './Exercise17';
 import Exercise18 from './Exercise18';
 import Exercise19 from './Exercise19';
+import Exercise20 from './Exercise20';
+import Exercise21 from './Exercise21';
+import Exercise22 from './Exercise22';
 
 const exerciseTabs = [
   { id: 'student', label: 'Student Mgmt' },
@@ -21,10 +24,13 @@ const exerciseTabs = [
   { id: 'ex17', label: 'Ex 17 (Render & Commit)' },
   { id: 'ex18', label: 'Ex 18 (State Snapshot)' },
   { id: 'ex19', label: 'Ex 19 (PropTypes)' },
+  { id: 'ex20', label: 'Ex 20 (Decoupling Route)' },
+  { id: 'ex21', label: 'Ex 21 (Route ResourceID)' },
+  { id: 'ex22', label: 'Ex 22 (Optional Params & Link)' },
 ];
 
 function App() {
-  const [activeTab, setActiveTab] = useState('ex19');
+  const [activeTab, setActiveTab] = useState('ex22');
 
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
@@ -100,6 +106,9 @@ function App() {
         {activeTab === 'ex17' && <Exercise17 />}
         {activeTab === 'ex18' && <Exercise18 />}
         {activeTab === 'ex19' && <Exercise19 />}
+        {activeTab === 'ex20' && <Exercise20 />}
+        {activeTab === 'ex21' && <Exercise21 />}
+        {activeTab === 'ex22' && <Exercise22 />}
       </div>
     </div>
   );

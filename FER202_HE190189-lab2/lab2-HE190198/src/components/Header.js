@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { MdOutlineNightlight, MdOutlineNightlightRound } from 'react-icons/md';
 
 export default function Header() {
   const { darkMode, toggleTheme } = useTheme();
@@ -9,9 +10,28 @@ export default function Header() {
       <h2 style={{ margin: 0 }}>Mini Movie Manager</h2>
       <button 
         onClick={toggleTheme}
-        style={{ padding: '6px 12px', cursor: 'pointer', background: 'transparent', border: '1px solid currentColor', borderRadius: '4px', color: 'inherit' }}
+        style={{ 
+          display: 'inline-flex', 
+          alignItems: 'center', 
+          gap: '6px', 
+          padding: '6px 12px', 
+          cursor: 'pointer', 
+          background: 'transparent', 
+          border: '1px solid currentColor', 
+          borderRadius: '4px', 
+          color: 'inherit',
+          fontSize: '14px'
+        }}
       >
-        {darkMode ? '☀️ Light' : '🌙 Dark'}
+        {darkMode ? (
+          <>
+            <MdOutlineNightlightRound size={18} /> Light
+          </>
+        ) : (
+          <>
+            <MdOutlineNightlight size={18} /> Dark
+          </>
+        )}
       </button>
     </div>
   );
