@@ -1,0 +1,8 @@
+.App {
+  min-height: 100vh;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
