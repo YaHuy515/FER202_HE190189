@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 18: Demo about State as a Snapshot</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+        }
+
+        .lab-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .expectations-list li {
+            margin-bottom: 4px;
+        }
+
+        /* Khung Code mẫu theo giáo trình */
+        .code-snippet-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .code-snippet-box .comment { color: #6a9955; }
+        .code-snippet-box .keyword { color: #569cd6; }
+        .code-snippet-box .string { color: #ce9178; }
+        .code-snippet-box .func { color: #dcdcaa; }
+        .code-snippet-box .tag { color: #569cd6; }
+        .code-snippet-box .attr { color: #9cdcfe; }
+
+        /* Output container (Light theme) */
+        .output-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 14px;
+            background-color: #ffffff;
+        }
+
+        .output-header {
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 28px 20px;
+        }
+
+        /* Demo Card */
+        .demo-card {
+            background-color: #ffffff;
+            color: #0f172a;
+            border-radius: 8px;
+            padding: 28px 24px;
+            text-align: center;
+            max-width: 520px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .demo-card h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .demo-card p {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .btn-action-group {
+            display: inline-flex;
+            border: 1px solid #000000;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .btn-action-group button {
+            background-color: #efefef;
+            color: #000000;
+            border: none;
+            border-right: 1px solid #000000;
+            padding: 6px 14px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .btn-action-group button:last-child {
+            border-right: none;
+        }
+
+        .btn-action-group button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-action-group button:active {
+            background-color: #d0d0d0;
+        }
+
+        .snapshot-status {
+            margin-top: 18px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Header -->
+        <div class="lab-card mb-4">
+            <h1 class="lab-title">Exercise 18: Demo about State as a Snapshot</h1>
+            <hr style="border-top: 2px solid #0f172a; margin: 10px 0 16px;">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                In this example, we'll create a simple counter component that allows you to take a snapshot of the current count value and restore it later.
+            </p>
+        </div>
+
+        <h3 class="section-header mb-3" style="font-size: 1.25rem; font-style: normal; font-weight: 700;">Exercises</h3>
+
+        <!-- Main Section: SnapshotDemo -->
+        <div class="lab-card">
+            <div class="exercise-title">Create a new React component called SnapshotDemo</div>
+
+            <div class="expectations-title">Code Implementation (SnapshotDemo.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React, &#123; <span class="func">useState</span> &#125; <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">const</span> <span class="func">SnapshotDemo</span> = () =&gt; &#123;
+    <span class="keyword">const</span> [count, setCount] = <span class="func">useState</span>(<span class="keyword">0</span>);
+    <span class="keyword">const</span> [snapshot, setSnapshot] = <span class="func">useState</span>(<span class="keyword">null</span>);
+
+    <span class="keyword">const</span> <span class="func">handleIncrement</span> = () =&gt; &#123;
+        <span class="func">setCount</span>(count + <span class="keyword">1</span>);
+    &#125;;
+
+    <span class="keyword">const</span> <span class="func">handleSnapshot</span> = () =&gt; &#123;
+        <span class="func">setSnapshot</span>(count);
+    &#125;;
+
+    <span class="keyword">const</span> <span class="func">handleRestore</span> = () =&gt; &#123;
+        <span class="keyword">if</span> (snapshot !== <span class="keyword">null</span>) &#123;
+            <span class="func">setCount</span>(snapshot);
+        &#125;
+    &#125;;
+
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">div</span>&gt;
+            &lt;<span class="tag">h1</span>&gt;State as a Snapshot Demo&lt;/<span class="tag">h1</span>&gt;
+            &lt;<span class="tag">p</span>&gt;Count: &#123;count&#125;&lt;/<span class="tag">p</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;handleIncrement&#125;&gt;Increment&lt;/<span class="tag">button</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;handleSnapshot&#125;&gt;Take Snapshot&lt;/<span class="tag">button</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;handleRestore&#125;&gt;Restore Snapshot&lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+    );
+&#125;;
+
+<span class="keyword">export default</span> SnapshotDemo;
+            </div>
+
+            <p style="color: #475569; font-size: 0.95rem; margin-top: 10px;">
+                In this component, we use the <code>useState</code> hook to create two state variables: <code>count</code> and <code>snapshot</code>. The count state represents the current count value, while the snapshot state holds the snapshot of the count value.
+            </p>
+            <p style="color: #475569; font-size: 0.95rem;">
+                We have three event handlers:
+            </p>
+            <ul class="expectations-list">
+                <li><strong>handleIncrement</strong>: Increases the count value by 1 when the "Increment" button is clicked.</li>
+                <li><strong>handleSnapshot</strong>: Takes a snapshot of the current count value and stores it in the snapshot state when the "Take Snapshot" button is clicked.</li>
+                <li><strong>handleRestore</strong>: Restores the count value from the snapshot state when the "Restore Snapshot" button is clicked, but only if a snapshot is available.</li>
+            </ul>
+
+            <div class="expectations-title">Root Application Integration (App.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> <span class="string">'./App.css'</span>;
+<span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> <span class="string">'./Component/SnapshotDemo'</span>;
+<span class="keyword">import</span> SnapshotDemo <span class="keyword">from</span> <span class="string">'./Component/SnapshotDemo'</span>;
+
+<span class="keyword">function</span> <span class="func">App</span>() &#123;
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">React.StrictMode</span>&gt;
+            &lt;<span class="tag">SnapshotDemo</span> /&gt;
+        &lt;/<span class="tag">React.StrictMode</span>&gt;
+    );
+&#125;
+
+<span class="keyword">export default</span> App;
+            </div>
+
+            <!-- React Output Mount Point -->
+            <div id="root"></div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="lab-card mt-4 text-center">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                Using state as a snapshot allows you to save and restore specific states of your component. In this demo, we save the count value as a snapshot and restore it if a snapshot is available. This concept can be useful when you want to implement features like undo/redo functionality or save and restore user input in forms.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18 & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // 1. SnapshotDemo Component exact to specification
+        const SnapshotDemo = () => {
+            const [count, setCount] = useState(0);
+            const [snapshot, setSnapshot] = useState(null);
+
+            const handleIncrement = () => {
+                setCount(count + 1);
+            };
+
+            const handleSnapshot = () => {
+                setSnapshot(count);
+            };
+
+            const handleRestore = () => {
+                if (snapshot !== null) {
+                    setCount(snapshot);
+                }
+            };
+
+            return (
+                <div className="demo-card">
+                    <h1>State as a Snapshot Demo</h1>
+                    <p>Count: <strong className="text-primary">{count}</strong></p>
+                    
+                    <div className="btn-action-group">
+                        <button onClick={handleIncrement}>Increment</button>
+                        <button onClick={handleSnapshot}>Take Snapshot</button>
+                        <button onClick={handleRestore}>Restore Snapshot</button>
+                    </div>
+
+                    <div className="snapshot-status">
+                        Saved Snapshot Value: <strong>{snapshot !== null ? snapshot : 'None'}</strong>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App
+        function App() {
+            return (
+                <div className="output-container">
+                    <div className="output-header">
+                        <span>LIVE OUTPUT - SNAPSHOT DEMO COMPONENT</span>
+                        <span className="badge bg-primary">React 18 StrictMode</span>
+                    </div>
+                    <div className="output-body">
+                        <SnapshotDemo />
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        );
+    </script>
+</body>
+</html>

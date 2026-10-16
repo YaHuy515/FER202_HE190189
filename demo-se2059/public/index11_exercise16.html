@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 16: Demo about Event Handling</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+        }
+
+        .lab-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .expectations-list li {
+            margin-bottom: 4px;
+        }
+
+        /* Khung Code mẫu theo giáo trình */
+        .code-snippet-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .code-snippet-box .comment { color: #6a9955; }
+        .code-snippet-box .keyword { color: #569cd6; }
+        .code-snippet-box .string { color: #ce9178; }
+        .code-snippet-box .func { color: #dcdcaa; }
+        .code-snippet-box .tag { color: #569cd6; }
+        .code-snippet-box .attr { color: #9cdcfe; }
+
+        /* Output container */
+        .output-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 14px;
+        }
+
+        .output-header {
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-body {
+            background-color: #282c34;
+            color: #ffffff;
+            padding: 28px 20px;
+        }
+
+        /* Demo Box Styles */
+        .demo-card {
+            background-color: #1e293b;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 28px 24px;
+            text-align: center;
+            max-width: 520px;
+            margin: 0 auto;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .demo-card h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #38bdf8;
+        }
+
+        .demo-card p {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+
+        .btn-custom {
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-custom:hover {
+            background-color: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-custom:active {
+            transform: translateY(0);
+        }
+
+        .event-badge {
+            display: inline-block;
+            background: #334155;
+            color: #93c5fd;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-family: monospace;
+            margin-bottom: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Header -->
+        <div class="lab-card mb-4">
+            <h1 class="lab-title">Exercise 16: Demo about Event Handling</h1>
+            <hr style="border-top: 2px solid #0f172a; margin: 10px 0 16px;">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                This exercise is a demo that showcases event handling in React
+            </p>
+        </div>
+
+        <h3 class="section-header mb-3" style="font-size: 1.25rem; font-style: normal; font-weight: 700;">Exercises</h3>
+
+        <!-- Main Section: EventHandlingDemo -->
+        <div class="lab-card">
+            <div class="exercise-title">1. Create a component called EventHandlingDemo</div>
+            <ul class="expectations-list">
+                <li>Create a functional component called <code>EventHandlingDemo</code>. Inside the component, we use the <code>useState</code> hook to initialize and manage a <code>count</code> state variable.</li>
+                <li>Define a function called <code>handleButtonClick</code> that increments the count state when the button is clicked. This function is called in the <code>onClick</code> event handler of the button.</li>
+            </ul>
+
+            <div class="expectations-title">Code Implementation (EventHandlingDemo.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React, &#123; useState &#125; <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">const</span> <span class="func">EventHandlingDemo</span> = () =&gt; &#123;
+    <span class="keyword">const</span> [count, setCount] = <span class="func">useState</span>(<span class="keyword">0</span>);
+
+    <span class="keyword">const</span> <span class="func">handleButtonClick</span> = () =&gt; &#123;
+        <span class="func">setCount</span>(count + <span class="keyword">1</span>);
+    &#125;;
+
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">div</span>&gt;
+            &lt;<span class="tag">h1</span>&gt;Event Handling Demo&lt;/<span class="tag">h1</span>&gt;
+            &lt;<span class="tag">p</span>&gt;Count: &#123;count&#125;&lt;/<span class="tag">p</span>&gt;
+            &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;handleButtonClick&#125;&gt;Increase Count&lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+    );
+&#125;;
+
+<span class="keyword">export default</span> EventHandlingDemo;
+            </div>
+
+            <div class="expectations-title">Integration in App.js:</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> EventHandlingDemo <span class="keyword">from</span> <span class="string">'./EventHandlingDemo'</span>;
+
+<span class="keyword">const</span> <span class="func">App</span> = () =&gt; &#123;
+    <span class="keyword">return</span> (
+        &lt;<span class="tag">div</span>&gt;
+            &lt;<span class="tag">EventHandlingDemo</span> /&gt;
+        &lt;/<span class="tag">div</span>&gt;
+    );
+&#125;;
+
+<span class="keyword">export default</span> App;
+            </div>
+
+            <p style="color: #475569; font-size: 0.95rem; margin-top: 10px; margin-bottom: 12px;">
+                The return statement renders a simple UI that displays the current count and a button. When the button is clicked, the <code>handleButtonClick</code> function is called, updating the count and triggering a re-render of the component.
+            </p>
+
+            <!-- React Output Mount Point -->
+            <div id="root"></div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="lab-card mt-4 text-center">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                This demo showcases a simple event handling scenario in React. You can extend and modify it to handle different events and perform various actions based on user interaction.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18 & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // 1. Exact EventHandlingDemo Component as in exercise requirements
+        const EventHandlingDemo = () => {
+            const [count, setCount] = useState(0);
+
+            const handleButtonClick = () => {
+                setCount(count + 1);
+            };
+
+            return (
+                <div className="demo-card">
+                    <span className="event-badge">onClick Event Handler</span>
+                    <h1>Event Handling Demo</h1>
+                    <p>Count: <strong style={{ color: '#38bdf8' }}>{count}</strong></p>
+                    <div className="d-flex justify-content-center gap-2">
+                        <button className="btn-custom" onClick={handleButtonClick}>
+                            Increase Count
+                        </button>
+                        {count > 0 && (
+                            <button 
+                                className="btn btn-outline-secondary" 
+                                style={{ borderRadius: '6px', fontSize: '0.9rem' }}
+                                onClick={() => setCount(0)}
+                            >
+                                Reset
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // 2. Extended Event Handling Showcase (onChange, onSubmit, onMouseEnter/Leave, onKeyDown)
+        const ExtendedEventDemo = () => {
+            const [textInput, setTextInput] = useState('');
+            const [submittedText, setSubmittedText] = useState('');
+            const [isHovered, setIsHovered] = useState(false);
+            const [lastKey, setLastKey] = useState('');
+
+            const handleFormSubmit = (e) => {
+                e.preventDefault();
+                setSubmittedText(textInput);
+            };
+
+            return (
+                <div className="demo-card mt-4 text-start" style={{ maxWidth: '650px' }}>
+                    <h2 className="h5 text-info mb-3 text-center">
+                        <i className="bi bi-stars me-2"></i>Extended Event Handling Demos
+                    </h2>
+                    
+                    {/* 1. onChange & onSubmit */}
+                    <form onSubmit={handleFormSubmit} className="mb-4 p-3 rounded" style={{ backgroundColor: '#0f172a' }}>
+                        <label className="form-label text-light small fw-bold">
+                            1. Form Event (<code>onChange</code> & <code>onSubmit</code>):
+                        </label>
+                        <div className="input-group">
+                            <input 
+                                type="text"
+                                className="form-control"
+                                placeholder="Type something and press Submit..."
+                                value={textInput}
+                                onChange={(e) => setTextInput(e.target.value)}
+                            />
+                            <button className="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                        {submittedText && (
+                            <div className="mt-2 text-success small">
+                                <i className="bi bi-check-circle me-1"></i>Submitted value: <strong>{submittedText}</strong>
+                            </div>
+                        )}
+                    </form>
+
+                    {/* 2. onMouseEnter / onMouseLeave */}
+                    <div 
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        className="p-3 mb-3 rounded text-center transition-all"
+                        style={{
+                            backgroundColor: isHovered ? '#0369a1' : '#0f172a',
+                            border: '1px dashed #38bdf8',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                        }}
+                    >
+                        <div className="fw-bold mb-1">
+                            2. Mouse Events (<code>onMouseEnter</code> / <code>onMouseLeave</code>)
+                        </div>
+                        <span className="small text-light">
+                            {isHovered ? 'Mouse is inside the box! 🎯' : 'Hover over this area to trigger event 🖱️'}
+                        </span>
+                    </div>
+
+                    {/* 3. onKeyDown */}
+                    <div className="p-3 rounded" style={{ backgroundColor: '#0f172a' }}>
+                        <label className="form-label text-light small fw-bold">
+                            3. Keyboard Event (<code>onKeyDown</code>):
+                        </label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Click here and press any keyboard key..."
+                            onKeyDown={(e) => setLastKey(`${e.key} (Key Code: ${e.code})`)}
+                        />
+                        {lastKey && (
+                            <div className="mt-2 text-warning small">
+                                <i className="bi bi-keyboard me-1"></i>Last key pressed: <code>{lastKey}</code>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Container
+        const App = () => {
+            const [showExtended, setShowExtended] = useState(false);
+
+            return (
+                <div>
+                    <div className="output-container">
+                        <div className="output-header">
+                            <span>LIVE OUTPUT - EVENT HANDLING DEMO COMPONENT</span>
+                            <div className="d-flex align-items-center gap-2">
+                                <span className="badge bg-primary">React 18</span>
+                                <button 
+                                    className="btn btn-xs btn-outline-secondary py-0 px-2" 
+                                    style={{ fontSize: '0.78rem' }}
+                                    onClick={() => setShowExtended(!showExtended)}
+                                >
+                                    {showExtended ? 'Hide Extensions' : 'Show More Events'}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="output-body">
+                            <EventHandlingDemo />
+                            {showExtended && <ExtendedEventDemo />}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

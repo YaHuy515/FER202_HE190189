@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 19: PropTypes</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .lab-container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+        }
+
+        .lab-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .lab-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            font-size: 1.15rem;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .expectations-title {
+            font-size: 0.95rem;
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        .expectations-list {
+            padding-left: 20px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .expectations-list li {
+            margin-bottom: 4px;
+        }
+
+        /* Khung Code mẫu theo giáo trình */
+        .code-snippet-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .code-snippet-box .comment { color: #6a9955; }
+        .code-snippet-box .keyword { color: #569cd6; }
+        .code-snippet-box .string { color: #ce9178; }
+        .code-snippet-box .func { color: #dcdcaa; }
+        .code-snippet-box .tag { color: #569cd6; }
+        .code-snippet-box .attr { color: #9cdcfe; }
+
+        /* Output container (Light theme) */
+        .output-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 14px;
+            background-color: #ffffff;
+        }
+
+        .output-header {
+            background-color: #f1f5f9;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 28px 20px;
+        }
+
+        /* Animals Container & AnimalCard Styles */
+        .animals-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            padding: 10px 0 20px;
+        }
+
+        .animal-card {
+            background-color: #ffc107;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            width: 250px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            transition: transform 0.2s ease;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .animal-image-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+        }
+
+        .animal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .animal-content {
+            padding: 14px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .animal-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #d9381e;
+            margin-bottom: 10px;
+        }
+
+        .animal-info-box {
+            background-color: #ffffff;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .animal-info-row {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .animal-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn-more-info {
+            background-color: #d9381e;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 7px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .btn-more-info:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lab-container">
+        <!-- Header -->
+        <div class="lab-card mb-4">
+            <h1 class="lab-title">Exercise 19: PropTypes</h1>
+            <hr style="border-top: 2px solid #0f172a; margin: 10px 0 16px;">
+            <h2 class="section-header">Objectives and Outcomes</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                <code>PropTypes</code> is a library in React that allows you to specify the expected types of props passed to a component. It helps in validating and documenting the expected props, ensuring that they are of the correct type.
+            </p>
+        </div>
+
+        <h3 class="section-header mb-3" style="font-size: 1.25rem; font-style: normal; font-weight: 700;">Exercise</h3>
+
+        <div class="lab-card">
+            <ul class="expectations-list">
+                <li><strong>Step 1</strong> &mdash; Creating an Empty Project named <code>prop_example</code></li>
+                <li><strong>Step 2</strong> &mdash; Building Dynamic Components with Props</li>
+            </ul>
+
+            <p style="color: #475569; font-size: 0.95rem;">
+                Create a component that will display information about animals. This component will take the name and scientific name of the animal as strings, the size as an integer, the diet as an array of strings, and additional information as an object. You'll pass the information to the new component as props and consume that information in your component.
+            </p>
+
+            <div class="expectations-title">1. Adding Data (data.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">export default</span> [
+  &#123;
+    name: <span class="string">'Lion'</span>,
+    scientificName: <span class="string">'Panthero leo'</span>,
+    size: <span class="keyword">140</span>,
+    diet: [<span class="string">'meat'</span>],
+  &#125;,
+  &#123;
+    name: <span class="string">'Gorilla'</span>,
+    scientificName: <span class="string">'Gorilla beringei'</span>,
+    size: <span class="keyword">205</span>,
+    diet: [<span class="string">'plants'</span>, <span class="string">'insects'</span>],
+    additional: &#123;
+      notes: <span class="string">'This is the eastern gorilla. There is also a western gorilla that is a different species.'</span>
+    &#125;
+  &#125;,
+  &#123;
+    name: <span class="string">'Zebra'</span>,
+    scientificName: <span class="string">'Equus quagga'</span>,
+    size: <span class="keyword">322</span>,
+    diet: [<span class="string">'plants'</span>],
+    additional: &#123;
+      notes: <span class="string">'There are three different species of zebra.'</span>,
+      link: <span class="string">'https://en.wikipedia.org/wiki/Zebra'</span>
+    &#125;
+  &#125;
+];
+            </div>
+
+            <div class="expectations-title">2. Step 3 &mdash; Creating Predictable Props with PropTypes and defaultProps (AnimalCard.js):</div>
+            <div class="code-snippet-box">
+<span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> PropTypes <span class="keyword">from</span> <span class="string">'prop-types'</span>;
+<span class="keyword">import</span> <span class="string">'./AnimalCard.css'</span>;
+
+<span class="keyword">export default function</span> <span class="func">AnimalCard</span>(&#123;
+  additional,
+  diet,
+  name,
+  scientificName,
+  showAdditional,
+  size
+&#125;) &#123;
+  <span class="keyword">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="string">"animal-wrapper"</span>&gt;
+      &lt;<span class="tag">h2</span>&gt;&#123;name&#125;&lt;/<span class="tag">h2</span>&gt;
+      &lt;<span class="tag">h3</span>&gt;&#123;scientificName&#125;&lt;/<span class="tag">h3</span>&gt;
+      &lt;<span class="tag">h4</span>&gt;&#123;size&#125; kg&lt;/<span class="tag">h4</span>&gt;
+      &lt;<span class="tag">div</span>&gt;&#123;diet.join(<span class="string">', '</span>)&#125;.&lt;/<span class="tag">div</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>=&#123;() =&gt; showAdditional(additional)&#125;&gt;More Info&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+&#125;
+
+AnimalCard.propTypes = &#123;
+  additional: PropTypes.shape(&#123;
+    link: PropTypes.string,
+    notes: PropTypes.string
+  &#125;),
+  diet: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
+  scientificName: PropTypes.string.isRequired,
+  showAdditional: PropTypes.func.isRequired,
+  size: PropTypes.number.isRequired,
+&#125;;
+
+AnimalCard.defaultProps = &#123;
+  additional: &#123;
+    notes: <span class="string">'No Additional Information'</span>
+  &#125;
+&#125;;
+            </div>
+
+            <!-- React Output Mount Point -->
+            <div id="root"></div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="lab-card mt-4 text-center">
+            <h2 class="section-header">Conclusion</h2>
+            <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0;">
+                In conclusion, <code>PropTypes</code> is a library in React that allows you to specify the expected types of props passed to a component.
+            </p>
+        </div>
+    </div>
+
+    <!-- React 18, PropTypes & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        // Animals Data
+        const animalsData = [
+            {
+                name: 'Lion',
+                scientificName: 'Panthero leo',
+                size: 140,
+                diet: ['meat'],
+                image: 'https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                name: 'Gorilla',
+                scientificName: 'Gorilla beringei',
+                size: 205,
+                diet: ['plants', 'insects'],
+                additional: {
+                    notes: 'This is the eastern gorilla. There is also a western gorilla that is a different species.'
+                },
+                image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                name: 'Zebra',
+                scientificName: 'Equus quagga',
+                size: 322,
+                diet: ['plants'],
+                additional: {
+                    notes: 'There are three different species of zebra.',
+                    link: 'https://en.wikipedia.org/wiki/Zebra'
+                },
+                image: 'https://images.unsplash.com/photo-1526095179574-86e545346ae6?w=600&auto=format&fit=crop&q=80'
+            }
+        ];
+
+        // AnimalCard Component
+        function AnimalCard({
+            additional,
+            diet,
+            name,
+            scientificName,
+            showAdditional,
+            size,
+            image
+        }) {
+            return (
+                <div className="animal-card">
+                    {image && (
+                        <div className="animal-image-wrapper">
+                            <img src={image} alt={name} className="animal-image" />
+                        </div>
+                    )}
+                    <div className="animal-content">
+                        <div className="animal-name">{name}</div>
+                        
+                        <div className="animal-info-box">
+                            <div className="animal-info-row">
+                                Scientific Name: {scientificName}
+                            </div>
+                            <div className="animal-info-row">
+                                {size} kg
+                            </div>
+                            <div className="animal-info-row">
+                                {diet ? diet.join(', ') : ''}.
+                            </div>
+                        </div>
+
+                        <button 
+                            className="btn-more-info" 
+                            onClick={() => showAdditional(additional)}
+                        >
+                            More Info
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        AnimalCard.propTypes = {
+            additional: PropTypes.shape({
+                link: PropTypes.string,
+                notes: PropTypes.string
+            }),
+            diet: PropTypes.arrayOf(PropTypes.string).isRequired,
+            name: PropTypes.string.isRequired,
+            scientificName: PropTypes.string.isRequired,
+            showAdditional: PropTypes.func.isRequired,
+            size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+            image: PropTypes.string
+        };
+
+        AnimalCard.defaultProps = {
+            additional: {
+                notes: 'No Additional Information'
+            }
+        };
+
+        // Main App
+        function App() {
+            const showAdditional = (additional) => {
+                if (!additional) {
+                    alert('No Additional Information');
+                    return;
+                }
+                const alertInformation = Object.entries(additional)
+                    .map(information => `${information[0]}: ${information[1]}`)
+                    .join('\n');
+                alert(alertInformation);
+            };
+
+            return (
+                <div className="output-container">
+                    <div className="output-header">
+                        <span>LIVE OUTPUT - ANIMALS CARDS (PROPTYPES DEMO)</span>
+                        <span className="badge bg-primary">PropTypes Validated</span>
+                    </div>
+                    <div className="output-body text-center">
+                        <h1 className="fw-bold text-dark mb-4">Animals</h1>
+                        <div className="animals-container">
+                            {animalsData.map(animal => (
+                                <AnimalCard
+                                    key={animal.name}
+                                    additional={animal.additional}
+                                    diet={animal.diet}
+                                    name={animal.name}
+                                    scientificName={animal.scientificName}
+                                    showAdditional={showAdditional}
+                                    size={animal.size}
+                                    image={animal.image}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
