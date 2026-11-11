@@ -6,11 +6,20 @@ import Toast from './components/Toast';
 import './App.css';
 
 function App() {
-  // Theme & Session State (Mặc định là 'light' nếu chưa lưu theme)
+  // Theme & Session State (Dùng sessionStorage để mỗi tab có thể đăng nhập độc lập: Admin & User song song)
   const [theme, setTheme] = useState(() => localStorage.getItem('toy_share_theme') || 'light');
   const [currentUser, setCurrentUser] = useState(() => {
-    const savedUser = localStorage.getItem('toy_share_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    const sessionUser = sessionStorage.getItem('toy_share_user');
+    if (sessionUser) return JSON.parse(sessionUser);
+
+    // Chuyển đổi dữ liệu cũ từ localStorage sang sessionStorage nếu có
+    const localUser = localStorage.getItem('toy_share_user');
+    if (localUser) {
+      sessionStorage.setItem('toy_share_user', localUser);
+      localStorage.removeItem('toy_share_user');
+      return JSON.parse(localUser);
+    }
+    return null;
   });
 
   // Toast Notification State
@@ -30,12 +39,14 @@ function App() {
   // Auth Callbacks
   const handleLoginSuccess = (userData) => {
     setCurrentUser(userData);
-    localStorage.setItem('toy_share_user', JSON.stringify(userData));
+    sessionStorage.setItem('toy_share_user', JSON.stringify(userData));
+    localStorage.removeItem('toy_share_user');
     showToast(`Đăng nhập thành công! Chào mừng ${userData.displayName || userData.username}.`, 'success');
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
+    sessionStorage.removeItem('toy_share_user');
     localStorage.removeItem('toy_share_user');
     showToast('Đã đăng xuất khỏi hệ thống.', 'info');
   };
@@ -43,7 +54,7 @@ function App() {
   // 🟢 HÀM CẬP NHẬT USER (Dùng khi mượn/trả đồ làm thay đổi Điểm Uy Tín hoặc số lượng mượn)
   const handleUpdateUser = (updatedUserData) => {
     setCurrentUser(updatedUserData);
-    localStorage.setItem('toy_share_user', JSON.stringify(updatedUserData));
+    sessionStorage.setItem('toy_share_user', JSON.stringify(updatedUserData));
   };
 
   // Toast Helper

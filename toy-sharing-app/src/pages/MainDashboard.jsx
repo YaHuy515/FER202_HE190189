@@ -505,18 +505,32 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
           )}
         </div>
 
-        {currentUser && (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button 
-            className="btn btn-primary"
+            className="btn btn-outline"
             onClick={() => {
-              setEditingToy(null);
-              setIsFormOpen(true);
+              fetchData();
+              showToast('Đã đồng bộ dữ liệu mới nhất từ server!', 'info');
             }}
+            title="Làm mới lại dữ liệu từ server (thuận tiện khi chạy song song 2 tài khoản)"
             style={{ whiteSpace: 'nowrap' }}
           >
-            ➕ Đăng Đồ Chơi Mới
+            🔄 Tải lại dữ liệu
           </button>
-        )}
+
+          {currentUser && (
+            <button 
+              className="btn btn-primary"
+              onClick={() => {
+                setEditingToy(null);
+                setIsFormOpen(true);
+              }}
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              ➕ Đăng Đồ Chơi Mới
+            </button>
+          )}
+        </div>
       </div>
 
       {/* TOYS LIST SECTION */}
