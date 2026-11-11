@@ -44,9 +44,18 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
   const [selectedToyForReturn, setSelectedToyForReturn] = useState(null);
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
 
-  // Fetch from json-server API
-  const fetchData = async () => {
-    setLoading(true);
+  // ⚡ Helper phát tín hiệu đồng bộ tức thì sang các tab khác qua BroadcastChannel
+  const notifySync = () => {
+    try {
+      const channel = new BroadcastChannel('toyshare_sync_channel');
+      channel.postMessage('SYNC_DATA');
+      channel.close();
+    } catch (e) {}
+  };
+
+  // Fetch from json-server API (hỗ trợ isBackground để tự động cập nhật ngầm không bị giật giao diện)
+  const fetchData = async (isBackground = false) => {
+    if (!isBackground) setLoading(true);
     try {
       const [toysRes, historyRes] = await Promise.all([
         axios.get(API_TOYS),
@@ -56,14 +65,45 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       setHistory(historyRes.data);
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
-      showToast('Lỗi kết nối máy chủ API! Vui lòng kiểm tra json-server.', 'danger');
+      if (!isBackground) {
+        showToast('Lỗi kết nối máy chủ API! Vui lòng kiểm tra json-server.', 'danger');
+      }
     } finally {
-      setLoading(false);
+      if (!isBackground) setLoading(false);
     }
   };
 
+  // 🔄 Tự động đồng bộ thời gian thực giữa các tab (0ms BroadcastChannel + 2.5s Polling + Window Focus)
   useEffect(() => {
     fetchData();
+
+    // 1. Nhận tín hiệu từ tab khác và cập nhật ngay lập tức (0ms)
+    let channel;
+    try {
+      channel = new BroadcastChannel('toyshare_sync_channel');
+      channel.onmessage = (event) => {
+        if (event.data === 'SYNC_DATA') {
+          fetchData(true);
+        }
+      };
+    } catch (e) {}
+
+    // 2. Tự động kiểm tra dữ liệu ngầm định kỳ mỗi 2.5 giây
+    const interval = setInterval(() => {
+      fetchData(true);
+    }, 2500);
+
+    // 3. Tự động cập nhật ngay khi người dùng click/chuyển sang tab này
+    const handleFocus = () => {
+      fetchData(true);
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+      channel?.close();
+    };
   }, []);
 
   // Reset Filters
@@ -136,6 +176,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
 
       setIsFormOpen(false);
       setEditingToy(null);
+      notifySync();
     } catch (err) {
       console.error(err);
       showToast('Thao tác lưu đồ chơi thất bại!', 'danger');
@@ -175,6 +216,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       // 3. Cập nhật State UI
       setToys(prev => prev.map(t => t.id === toy.id ? response.data : t));
       showToast(`Đã phê duyệt đồ chơi "${toy.name}" thành công! (+5 điểm cho chủ món đồ) 🎉`, 'success');
+      notifySync();
 
     } catch (err) {
       console.error(err);
@@ -197,6 +239,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       await axios.delete(`${API_TOYS}/${toyId}`);
       setToys(prev => prev.filter(t => t.id !== toyId));
       showToast(`Đã từ chối và gỡ bỏ bài đăng "${toyName}".`, 'warning');
+      notifySync();
     } catch (err) {
       console.error(err);
       showToast('Không thể từ chối bài đăng!', 'danger');
@@ -220,6 +263,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       await axios.delete(`${API_TOYS}/${toyId}`);
       setToys(prev => prev.filter(t => t.id !== toyId));
       showToast(`Đã xóa đồ chơi khỏi thư viện!`, 'danger');
+      notifySync();
     } catch (err) {
       console.error(err);
       showToast('Không thể thực hiện hành động xóa đồ chơi!', 'danger');
@@ -251,6 +295,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       } else {
         showToast(`Đã hoàn tất bảo trì "${targetToy.name}"! Đồ chơi hiện đã sẵn sàng cho mượn.`, 'success');
       }
+      notifySync();
     } catch (err) {
       console.error(err);
       showToast('Không thể cập nhật trạng thái bảo trì!', 'danger');
@@ -263,6 +308,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       await axios.patch(`${API_TOYS}/${toyId}`, { reviews: updatedReviews });
       setToys(prev => prev.map(t => t.id === toyId ? { ...t, reviews: updatedReviews } : t));
       showToast('Cảm ơn bạn đã gửi đánh giá! ⭐', 'success');
+      notifySync();
     } catch (err) {
       console.error('Error saving review:', err);
       showToast('Không thể lưu đánh giá!', 'danger');
@@ -329,6 +375,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       showToast(`Đã gửi yêu cầu mượn "${borrowData.toyName}" thành công!`, 'success');
       setIsBorrowModalOpen(false);
       setSelectedToyForBorrow(null);
+      notifySync();
     } catch (err) {
       console.error(err);
       showToast('Thao tác mượn đồ chơi thất bại!', 'danger');
@@ -399,6 +446,7 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
       } else {
         showToast(`Xác nhận trả đồ chơi "${toy.name}" thành công! +${BONUS_POINTS} điểm uy tín cho người mượn.`, 'success');
       }
+      notifySync();
 
     } catch (err) {
       console.error(err);
@@ -505,32 +553,18 @@ function MainDashboard({ currentUser, onUpdateUser, onLogout, theme, toggleTheme
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        {currentUser && (
           <button 
-            className="btn btn-outline"
+            className="btn btn-primary"
             onClick={() => {
-              fetchData();
-              showToast('Đã đồng bộ dữ liệu mới nhất từ server!', 'info');
+              setEditingToy(null);
+              setIsFormOpen(true);
             }}
-            title="Làm mới lại dữ liệu từ server (thuận tiện khi chạy song song 2 tài khoản)"
             style={{ whiteSpace: 'nowrap' }}
           >
-            🔄 Tải lại dữ liệu
+            ➕ Đăng Đồ Chơi Mới
           </button>
-
-          {currentUser && (
-            <button 
-              className="btn btn-primary"
-              onClick={() => {
-                setEditingToy(null);
-                setIsFormOpen(true);
-              }}
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              ➕ Đăng Đồ Chơi Mới
-            </button>
-          )}
-        </div>
+        )}
       </div>
 
       {/* TOYS LIST SECTION */}
